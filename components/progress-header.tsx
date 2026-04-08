@@ -11,7 +11,7 @@ interface ProgressHeaderProps {
 }
 
 export function ProgressHeader({ completedDays, currentDay }: ProgressHeaderProps) {
-  const progress = (completedDays.length / 14) * 100;
+  const progress = (completedDays.length / 15) * 100;
   const unlockedAchievements = achievements.filter((a) =>
     completedDays.includes(a.day)
   );
@@ -52,7 +52,7 @@ export function ProgressHeader({ completedDays, currentDay }: ProgressHeaderProp
                 Progress
               </div>
               <div className="mt-1 text-2xl font-bold text-foreground">
-                {completedDays.length}/14
+                {completedDays.length}/15
               </div>
             </div>
 

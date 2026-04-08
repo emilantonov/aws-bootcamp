@@ -42,7 +42,7 @@ export function WeekTabs({ completedDays, currentDay, onToggleComplete }: WeekTa
             Week 1: Core Infrastructure & Databases
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Build a solid foundation with compute, storage, databases, and monitoring. By the end
+            Build a solid foundation with compute, storage, API Gateway, databases, and monitoring. By the end
             of this week, you&apos;ll have a fully functional serverless API with persistent storage.
           </p>
         </div>

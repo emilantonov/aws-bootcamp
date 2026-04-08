@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'AWS Cloud Bootcamp - 2 Week Learning Path',
-  description: 'Master 12 AWS services in 2 weeks with hands-on exercises and daily missions',
+  title: 'AWS Cloud Bootcamp - 15 Day Learning Path',
+  description: 'Master 13 AWS services in 15 days with hands-on exercises and daily missions',
   generator: 'v0.app',
   icons: {
     icon: [

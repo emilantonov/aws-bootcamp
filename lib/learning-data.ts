@@ -202,6 +202,114 @@ export const handler = async (event) => {
   {
     day: 4,
     week: 1,
+    service: "Amazon API Gateway",
+    icon: "🚪",
+    tagline: "The front door to your cloud APIs!",
+    duration: "3 hours",
+    category: "networking",
+    objectives: [
+      "Understand REST vs HTTP APIs",
+      "Create API Gateway endpoints",
+      "Configure routes, methods, and integrations",
+      "Set up request/response transformations",
+      "Implement throttling and usage plans"
+    ],
+    concepts: [
+      "REST API vs HTTP API (costs & features)",
+      "Stages and deployments",
+      "Request/Response mapping templates",
+      "Authorizers (Lambda, Cognito, IAM)",
+      "Throttling, quotas, and usage plans",
+      "CORS configuration"
+    ],
+    exercise: {
+      title: "Build a Professional API Gateway",
+      description: "Create an HTTP API that fronts your Lambda Joke API! Add multiple routes, configure CORS, and set up request validation.",
+      codeSnippet: `// API Gateway HTTP API with Lambda Integration
+// Using AWS Console or IaC - here's the Terraform version:
+
+resource "aws_apigatewayv2_api" "joke_api" {
+  name          = "joke-api"
+  protocol_type = "HTTP"
+  
+  cors_configuration {
+    allow_origins = ["*"]
+    allow_methods = ["GET", "POST", "PUT", "DELETE"]
+    allow_headers = ["Content-Type", "Authorization"]
+    max_age       = 3600
+  }
+}
+
+resource "aws_apigatewayv2_stage" "default" {
+  api_id      = aws_apigatewayv2_api.joke_api.id
+  name        = "$default"
+  auto_deploy = true
+  
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_logs.arn
+    format = jsonencode({
+      requestId      = "$context.requestId"
+      ip             = "$context.identity.sourceIp"
+      requestTime    = "$context.requestTime"
+      httpMethod     = "$context.httpMethod"
+      routeKey       = "$context.routeKey"
+      status         = "$context.status"
+      responseLength = "$context.responseLength"
+      latency        = "$context.integrationLatency"
+    })
+  }
+}
+
+resource "aws_apigatewayv2_integration" "lambda" {
+  api_id             = aws_apigatewayv2_api.joke_api.id
+  integration_type   = "AWS_PROXY"
+  integration_uri    = aws_lambda_function.joke_handler.invoke_arn
+  integration_method = "POST"
+  payload_format_version = "2.0"
+}
+
+// Routes
+resource "aws_apigatewayv2_route" "get_joke" {
+  api_id    = aws_apigatewayv2_api.joke_api.id
+  route_key = "GET /api/joke"
+  target    = "integrations/\${aws_apigatewayv2_integration.lambda.id}"
+}
+
+resource "aws_apigatewayv2_route" "post_joke" {
+  api_id    = aws_apigatewayv2_api.joke_api.id
+  route_key = "POST /api/jokes"
+  target    = "integrations/\${aws_apigatewayv2_integration.lambda.id}"
+  authorization_type = "JWT"
+  authorizer_id = aws_apigatewayv2_authorizer.cognito.id
+}
+
+// JWT Authorizer (will use in Cognito day!)
+resource "aws_apigatewayv2_authorizer" "cognito" {
+  api_id           = aws_apigatewayv2_api.joke_api.id
+  authorizer_type  = "JWT"
+  identity_sources = ["$request.header.Authorization"]
+  name             = "cognito-authorizer"
+  
+  jwt_configuration {
+    audience = [aws_cognito_user_pool_client.client.id]
+    issuer   = "https://cognito-idp.us-east-1.amazonaws.com/\${aws_cognito_user_pool.pool.id}"
+  }
+}
+
+// Test your API:
+// curl https://your-api-id.execute-api.us-east-1.amazonaws.com/api/joke`,
+      difficulty: "medium"
+    },
+    bonusChallenge: "Add request validation using API Gateway models and set up a usage plan with API keys!",
+    resources: [
+      { title: "API Gateway Developer Guide", url: "https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html", type: "docs" },
+      { title: "HTTP API vs REST API", url: "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html", type: "docs" },
+      { title: "API Gateway Pricing", url: "https://aws.amazon.com/api-gateway/pricing/", type: "docs" }
+    ]
+  },
+  {
+    day: 5,
+    week: 1,
     service: "Amazon RDS",
     icon: "🐘",
     tagline: "Managed databases that scale!",
@@ -275,7 +383,7 @@ app.post('/api/jokes/:id/rate', async (req, res) => {
     ]
   },
   {
-    day: 5,
+    day: 6,
     week: 1,
     service: "Amazon DynamoDB",
     icon: "⚡",
@@ -349,7 +457,7 @@ app.get('/api/leaderboard/:category', async (req, res) => {
     ]
   },
   {
-    day: 6,
+    day: 7,
     week: 1,
     service: "Amazon CloudWatch",
     icon: "📊",
@@ -433,8 +541,8 @@ app.post('/api/jokes/:id/rate', async (req, res) => {
     ]
   },
   {
-    day: 7,
-    week: 1,
+    day: 8,
+    week: 2,
     service: "Weekend Challenge",
     icon: "🏆",
     tagline: "Put it all together!",
@@ -490,7 +598,7 @@ app.post('/api/jokes/:id/rate', async (req, res) => {
   },
   // WEEK 2: Advanced Services & IaC
   {
-    day: 8,
+    day: 9,
     week: 2,
     service: "Amazon CloudFront",
     icon: "🌐",
@@ -565,7 +673,7 @@ const invalidateCache = async (paths) => {
     ]
   },
   {
-    day: 9,
+    day: 10,
     week: 2,
     service: "Amazon Cognito",
     icon: "🔐",
@@ -651,7 +759,7 @@ app.get('/api/jokes', async (req, res) => {
     ]
   },
   {
-    day: 10,
+    day: 11,
     week: 2,
     service: "Amazon SNS",
     icon: "📢",
@@ -727,7 +835,7 @@ app.post('/api/admin/joke-of-the-day', authenticate, async (req, res) => {
     ]
   },
   {
-    day: 11,
+    day: 12,
     week: 2,
     service: "Amazon SQS",
     icon: "📬",
@@ -826,7 +934,7 @@ export const moderationHandler = async (event) => {
     ]
   },
   {
-    day: 12,
+    day: 13,
     week: 2,
     service: "CloudFormation",
     icon: "🏗️",
@@ -933,7 +1041,7 @@ Outputs:
     ]
   },
   {
-    day: 13,
+    day: 14,
     week: 2,
     service: "Terraform",
     icon: "🔷",
@@ -1053,7 +1161,7 @@ output "lambda_function_arn" {
     ]
   },
   {
-    day: 14,
+    day: 15,
     week: 2,
     service: "Final Project",
     icon: "🚀",
@@ -1149,15 +1257,16 @@ export const achievements = [
   { id: "first-server", name: "First Server!", description: "Launched your first EC2 instance", icon: "🖥️", day: 1 },
   { id: "bucket-master", name: "Bucket Master", description: "Created and configured an S3 bucket", icon: "🪣", day: 2 },
   { id: "serverless-hero", name: "Serverless Hero", description: "Deployed your first Lambda function", icon: "⚡", day: 3 },
-  { id: "data-keeper", name: "Data Keeper", description: "Set up RDS database", icon: "🐘", day: 4 },
-  { id: "nosql-ninja", name: "NoSQL Ninja", description: "Mastered DynamoDB", icon: "🥷", day: 5 },
-  { id: "observer", name: "The Observer", description: "Created CloudWatch dashboards", icon: "📊", day: 6 },
-  { id: "week1-complete", name: "Week 1 Complete!", description: "Finished Week 1 challenge", icon: "🏆", day: 7 },
-  { id: "cdn-speedster", name: "CDN Speedster", description: "Set up CloudFront distribution", icon: "🌐", day: 8 },
-  { id: "security-guard", name: "Security Guard", description: "Implemented Cognito auth", icon: "🔐", day: 9 },
-  { id: "broadcaster", name: "Broadcaster", description: "Sent SNS notifications", icon: "📢", day: 10 },
-  { id: "queue-master", name: "Queue Master", description: "Processed SQS messages", icon: "📬", day: 11 },
-  { id: "cloud-architect", name: "Cloud Architect", description: "Wrote CloudFormation template", icon: "🏗️", day: 12 },
-  { id: "terraform-pro", name: "Terraform Pro", description: "Deployed with Terraform", icon: "🔷", day: 13 },
-  { id: "aws-graduate", name: "AWS Graduate!", description: "Completed the bootcamp!", icon: "🎓", day: 14 }
+  { id: "api-gateway-pro", name: "Gateway Guardian", description: "Built professional API Gateway", icon: "🚪", day: 4 },
+  { id: "data-keeper", name: "Data Keeper", description: "Set up RDS database", icon: "🐘", day: 5 },
+  { id: "nosql-ninja", name: "NoSQL Ninja", description: "Mastered DynamoDB", icon: "🥷", day: 6 },
+  { id: "observer", name: "The Observer", description: "Created CloudWatch dashboards", icon: "📊", day: 7 },
+  { id: "week1-complete", name: "Week 1 Complete!", description: "Finished Week 1 challenge", icon: "🏆", day: 8 },
+  { id: "cdn-speedster", name: "CDN Speedster", description: "Set up CloudFront distribution", icon: "🌐", day: 9 },
+  { id: "security-guard", name: "Security Guard", description: "Implemented Cognito auth", icon: "🔐", day: 10 },
+  { id: "broadcaster", name: "Broadcaster", description: "Sent SNS notifications", icon: "📢", day: 11 },
+  { id: "queue-master", name: "Queue Master", description: "Processed SQS messages", icon: "📬", day: 12 },
+  { id: "cloud-architect", name: "Cloud Architect", description: "Wrote CloudFormation template", icon: "🏗️", day: 13 },
+  { id: "terraform-pro", name: "Terraform Pro", description: "Deployed with Terraform", icon: "🔷", day: 14 },
+  { id: "aws-graduate", name: "AWS Graduate!", description: "Completed the bootcamp!", icon: "🎓", day: 15 }
 ];

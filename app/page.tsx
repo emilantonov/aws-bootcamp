@@ -33,7 +33,7 @@ export default function LearningPathPage() {
         return prev.filter((d) => d !== day);
       } else {
         // Mark as complete and advance to next day if it's the current day
-        if (day === currentDay && currentDay < 14) {
+        if (day === currentDay && currentDay < 15) {
           setCurrentDay(currentDay + 1);
         }
         return [...prev, day];
@@ -71,7 +71,7 @@ export default function LearningPathPage() {
         {/* Footer */}
         <footer className="mt-12 border-t border-border pt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            Built with Next.js • 2 weeks • 12 AWS Services • JavaScript/TypeScript
+            Built with Next.js • 15 Days • 13 AWS Services • JavaScript/TypeScript
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
             Remember to clean up your AWS resources after each exercise to avoid unexpected charges!
