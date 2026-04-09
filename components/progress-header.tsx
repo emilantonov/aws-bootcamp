@@ -4,6 +4,7 @@ import { achievements } from "@/lib/learning-data";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Trophy, Flame, Target, Zap } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface ProgressHeaderProps {
   completedDays: number[];
@@ -30,8 +31,12 @@ export function ProgressHeader({ completedDays, currentDay }: ProgressHeaderProp
     <div className="mb-8 space-y-6">
       {/* Hero Section */}
       <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-6 md:p-8">
-        <div className="absolute right-0 top-0 -translate-y-1/4 translate-x-1/4 opacity-10">
+        <div className="pointer-events-none absolute right-0 top-0 -translate-y-1/4 translate-x-1/4 opacity-10">
           <Zap className="h-64 w-64 text-primary" />
+        </div>
+
+        <div className="absolute right-4 top-4 z-10 md:right-6 md:top-6">
+          <ThemeToggle />
         </div>
 
         <div className="relative space-y-4">
@@ -40,7 +45,7 @@ export function ProgressHeader({ completedDays, currentDay }: ProgressHeaderProp
               AWS Cloud Bootcamp
             </h1>
             <p className="text-lg text-muted-foreground">
-              Master 12 AWS services in 2 weeks with hands-on exercises
+              Master 13 AWS services in 15 days with hands-on exercises
             </p>
           </div>
 
