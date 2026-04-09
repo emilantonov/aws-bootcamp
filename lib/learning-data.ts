@@ -75,7 +75,8 @@ app.get('/health', (req, res) => {
 app.listen(3000, () => console.log('Joke API running on port 3000'));`,
       difficulty: "easy"
     },
-    bonusChallenge: "Set up a cron job that restarts the API if it crashes!",
+    bonusChallenge: `Set up a cron job that restarts the API if it crashes! \r\n
+For curl testing you need to add a security group rule to allow inbound traffic Type Custom TCP, Port 3000, Source 0.0.0.0/0.`,
     resources: [
       { title: "EC2 Getting Started Guide", url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html", type: "docs" },
       { title: "EC2 Instance Types", url: "https://aws.amazon.com/ec2/instance-types/", type: "docs" }
